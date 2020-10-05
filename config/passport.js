@@ -9,7 +9,24 @@ module.exports = function(passport){
         callbackURL:'/auth/google/callback'
     },
      async (accessToken, refreshToken, profile,done)=>{
-        console.log(profile)
+        const newUser = {
+            googleID: profile.id,
+            displayName: profile.name.displayName,
+            firstName: profile.name.givenName,
+            lastName: profile.name.familyName,
+            image: profile.photo[0].value
+        }
+        try{
+            let user = await User.findOne({ googleID: profile.id})
+            if(user){
+                done(null, user)
+            } else {
+                user = await User.create(newUser)
+                done(null, user)
+            }
+        } catch (err){
+            console.error(err)
+        }
      }))
 
      passport.serializeUser((user, done)=>{
