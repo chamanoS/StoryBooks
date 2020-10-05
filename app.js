@@ -22,6 +22,13 @@ if (process.env.NODE_ENV === 'development'){
 
 app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}))
 app.set('view engine', '.hbs')
+
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}))
+
 app.use(passport.initialize())
 app.use(passport.session( ))
 app.use(express.static(path.join(__dirname + '/public/')));
