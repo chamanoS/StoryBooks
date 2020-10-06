@@ -1,5 +1,5 @@
 <h1>Stories</h1>
-<div>
+<div class="row">
     {{#each stories}}
         <div class="col s12 m4">
             <div class="card">
@@ -12,7 +12,7 @@
                     <br>
                     <div class="chip">
                         <img src="{{user.image}}" alt="">
-                        <a href="/strories/user/{{user._id}}">{{user.displayName}}</a>
+                        <a href="/stories/user/{{user._id}}">{{user.displayName}}</a>
                     </div>
                 </div>
                 <div class="card-action centre-align">
@@ -22,5 +22,5 @@
         </div>
     {{else}}
         <p>No stories to display</p>
-    {{/else}}
+    {{/each}}
 </div>
