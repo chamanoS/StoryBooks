@@ -40,6 +40,12 @@ app.use(session({
 
 app.use(passport.initialize())
 app.use(passport.session( ))
+
+//set global var
+app.use((req,res,next) =>{
+res.locals.user = req.user || null
+next()
+})
 app.use(express.static(path.join(__dirname + '/public/')));
 
 app.use('/', require('./routes/index'))
