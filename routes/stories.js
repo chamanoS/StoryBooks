@@ -40,26 +40,33 @@ router.get('/', ensureAuth, async (req, res) => {
 
 //show the edit page
 router.get('/edit/:id', ensureAuth, async (req, res) => {
-   const story = await Story.findOne({
-       _id: req.params.id
-   }).lean()
-
-   if (!story) {
-       return res.render('error/404')
-   }
-
-   if (story.user != req.user.id){
-        res.redirect('/stories')
-   } else {
-       res.render('stories/edit',{
-           story,
-       })
-   }
+    try{
+        const story = await Story.findOne({
+            _id: req.params.id
+        }).lean()
+     
+        if (!story) {
+            return res.render('error/404')
+        }
+     
+        if (story.user != req.user.id){
+             res.redirect('/stories')
+        } else {
+            res.render('stories/edit',{
+                story,
+            })
+        }
+    } catch(error){
+        console.error(err)
+        return res.render('error/500')
+    }
+   
 })
 
 //update story
 router.put('/:id', ensureAuth, async(req, res) => {
-    let story = await Story.findById(req.params.id).lean()
+    try {
+        let story = await Story.findById(req.params.id).lean()
 
     if (!story) {
         return res.render('error/404')
@@ -74,6 +81,21 @@ router.put('/:id', ensureAuth, async(req, res) => {
 
        res.redirect('/dashboard')
    }
+    } catch(error){
+        console.error(err)
+        return res.render('error/500')
+    }
+})
+
+//delete story
+router.delete('/:id', ensureAuth,async (req, res) => {
+    try{
+        await Story.remove({ _id: req.params.id})
+        res.redirect('/dashboard')
+    } catch (err) {
+        console.error(err)
+        return res.render('error/500')
+    }
 })
 
 
