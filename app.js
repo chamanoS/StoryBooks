@@ -24,7 +24,7 @@ app.use(express.json())
 if (process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'))
 }
-const { formatDate } = require('./helpers/hbs')
+const { formatDate,stripTags, truncate } = require('./helpers/hbs')
 app.engine('.hbs', exphbs({
     helpers:{ formatDate},
     defaultLayout: 'main',
