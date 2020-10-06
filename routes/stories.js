@@ -8,6 +8,7 @@ router.get('/add', ensureAuth, (req, res) => {
     res.render('stories/add')
 })
 
+
 //process add form
 router.post('/', ensureAuth,async (req, res) => {
     try{
@@ -35,6 +36,26 @@ router.get('/', ensureAuth, async (req, res) => {
     } catch (err){
         console.error(err)
         res.render('error/500')
+    }
+})
+
+//show single story
+router.get('/:id', ensureAuth,async (req, res) => {
+    try{
+        let story = await Story.findById(req.params.id)
+            .populate('user')
+            .lean()
+
+        if(!story){
+            return res.render('error/404')
+        }
+        res.render('stories/show',{
+            story,
+        })
+
+    } catch(error){
+        console.error(err)
+        res.render('error/404')
     }
 })
 
